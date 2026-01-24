@@ -1,0 +1,25 @@
+# Ignore everything by default
+*
+
+# But don't ignore the .kiro directory and its contents
+!.kiro/
+!.kiro/**
+
+# Don't ignore .gitignore itself
+!.gitignore
+
+# Optional: Don't ignore README.md if you want to add one later
+# !README.md
+
+# Explicitly ignore common files that might be in .kiro accidentally
+.kiro/.DS_Store
+.kiro/Thumbs.db
+.kiro/*.tmp
+.kiro/*.temp
+.kiro/*.log
+
+# Ignore any potential backup files in .kiro
+.kiro/*~
+.kiro/*.bak
+.kiro/*.swp
+.kiro/*.swo
