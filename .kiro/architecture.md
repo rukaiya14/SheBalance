@@ -845,6 +845,406 @@ graph TB
 - Database integration points
 - Third-party service connectors
 
+## ☁️ **AWS Services Architecture**
+
+### **Complete AWS Services Ecosystem Diagram**
+
+```mermaid
+graph TB
+    subgraph "User Layer"
+        Users[👥 Users - Millions across India]
+        Devices[📱 Mobile/Web Devices]
+    end
+    
+    subgraph "CDN & Edge"
+        CloudFront[🌍 Amazon CloudFront]
+        EdgeLocations[📍 Edge Locations - 50+ in India]
+    end
+    
+    subgraph "API & Security Layer"
+        APIGateway[🔌 API Gateway]
+        WAF[🛡️ AWS WAF]
+        Cognito[🔐 Amazon Cognito]
+        IAM[👤 AWS IAM]
+    end
+    
+    subgraph "Compute Layer"
+        EC2[🖥️ Amazon EC2]
+        Lambda[⚡ AWS Lambda]
+        ECS[🐳 Amazon ECS]
+        AutoScaling[📈 Auto Scaling Groups]
+    end
+    
+    subgraph "AI/ML Services"
+        Bedrock[🤖 Amazon Bedrock]
+        Rekognition[👁️ Amazon Rekognition]
+        Polly[🔊 Amazon Polly]
+        Transcribe[🎤 Amazon Transcribe]
+        Comprehend[📝 Amazon Comprehend]
+        Personalize[🎯 Amazon Personalize]
+        SageMaker[🧠 Amazon SageMaker]
+        Q[💬 Amazon Q]
+    end
+    
+    subgraph "Storage & Database"
+        S3[📦 Amazon S3]
+        RDS[🗄️ Amazon RDS PostgreSQL]
+        DynamoDB[⚡ Amazon DynamoDB]
+        ElastiCache[🚀 Amazon ElastiCache Redis]
+        EFS[📁 Amazon EFS]
+    end
+    
+    subgraph "Integration & Messaging"
+        SNS[📱 Amazon SNS]
+        SQS[📬 Amazon SQS]
+        EventBridge[⚡ Amazon EventBridge]
+        SES[📧 Amazon SES]
+    end
+    
+    subgraph "Monitoring & Analytics"
+        CloudWatch[📊 Amazon CloudWatch]
+        XRay[🔍 AWS X-Ray]
+        QuickSight[📈 Amazon QuickSight]
+        Kinesis[🌊 Amazon Kinesis]
+    end
+    
+    subgraph "DevOps & Deployment"
+        CodePipeline[🔄 AWS CodePipeline]
+        CodeBuild[🏗️ AWS CodeBuild]
+        CodeDeploy[🚀 AWS CodeDeploy]
+        CloudFormation[📋 AWS CloudFormation]
+    end
+    
+    Users --> CloudFront
+    CloudFront --> EdgeLocations
+    EdgeLocations --> WAF
+    WAF --> APIGateway
+    APIGateway --> Cognito
+    Cognito --> EC2
+    EC2 --> AutoScaling
+    
+    EC2 --> Bedrock
+    EC2 --> Rekognition
+    EC2 --> RDS
+    EC2 --> S3
+    
+    Bedrock --> Q
+    Rekognition --> SageMaker
+    Polly --> Transcribe
+    
+    RDS --> ElastiCache
+    S3 --> CloudWatch
+    
+    Lambda --> SNS
+    SNS --> SES
+    EventBridge --> SQS
+    
+    CloudWatch --> QuickSight
+    XRay --> Kinesis
+    
+    CodePipeline --> CodeBuild
+    CodeBuild --> CodeDeploy
+```
+
+### **AWS Services by Category - Visual Breakdown**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AWS Services Architecture                │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                 Frontend & CDN                          │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ CloudFront  │ │ S3 Static   │ │ Route 53            │ │ │
+│  │  │ Global CDN  │ │ Website     │ │ DNS Management      │ │ │
+│  │  │ 50+ Edge    │ │ Hosting     │ │ Health Checks       │ │ │
+│  │  │ Locations   │ │             │ │                     │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                Security & Access                        │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ AWS WAF     │ │ Cognito     │ │ IAM                 │ │ │
+│  │  │ Web App     │ │ User Auth   │ │ Access Control      │ │ │
+│  │  │ Firewall    │ │ Identity    │ │ Role Management     │ │ │
+│  │  │ DDoS Protect│ │ Management  │ │ Policy Engine       │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                 API & Integration                       │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ API Gateway │ │ EventBridge │ │ Step Functions      │ │ │
+│  │  │ REST APIs   │ │ Event Bus   │ │ Workflow            │ │ │
+│  │  │ WebSocket   │ │ Scheduling  │ │ Orchestration       │ │ │
+│  │  │ Rate Limit  │ │ Integration │ │ State Management    │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                 Compute Services                        │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ EC2         │ │ Lambda      │ │ ECS/Fargate         │ │ │
+│  │  │ Virtual     │ │ Serverless  │ │ Container           │ │ │
+│  │  │ Servers     │ │ Functions   │ │ Orchestration       │ │ │
+│  │  │ Auto Scale  │ │ Event Drive │ │ Microservices       │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                   AI/ML Services                        │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ Bedrock     │ │ Rekognition │ │ SageMaker           │ │ │
+│  │  │ Foundation  │ │ Computer    │ │ ML Platform         │ │ │
+│  │  │ Models      │ │ Vision      │ │ Model Training      │ │ │
+│  │  │ Claude/GPT  │ │ Image AI    │ │ Deployment          │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ Polly       │ │ Transcribe  │ │ Comprehend          │ │ │
+│  │  │ Text-to-    │ │ Speech-to-  │ │ Natural Language    │ │ │
+│  │  │ Speech      │ │ Text        │ │ Processing          │ │ │
+│  │  │ Multi-Lang  │ │ Real-time   │ │ Sentiment Analysis  │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ Personalize │ │ Amazon Q    │ │ Textract            │ │ │
+│  │  │ ML Recomm   │ │ Business    │ │ Document            │ │ │
+│  │  │ Engine      │ │ Intelligence│ │ Analysis            │ │ │
+│  │  │ Real-time   │ │ Chatbot     │ │ OCR Service         │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                Storage & Database                       │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ RDS         │ │ DynamoDB    │ │ S3                  │ │ │
+│  │  │ PostgreSQL  │ │ NoSQL       │ │ Object Storage      │ │ │
+│  │  │ Multi-AZ    │ │ Serverless  │ │ Data Lake           │ │ │
+│  │  │ Read Replica│ │ Global      │ │ Static Assets       │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ ElastiCache │ │ EFS         │ │ Glacier             │ │ │
+│  │  │ Redis       │ │ File System │ │ Archive Storage     │ │ │
+│  │  │ In-Memory   │ │ Shared      │ │ Long-term Backup    │ │ │
+│  │  │ Caching     │ │ Storage     │ │ Cost Optimization   │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │              Messaging & Notifications                  │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ SNS         │ │ SQS         │ │ SES                 │ │ │
+│  │  │ Push        │ │ Message     │ │ Email Service       │ │ │
+│  │  │ Notifications│ │ Queue       │ │ Transactional       │ │ │
+│  │  │ Multi-channel│ │ Decoupling  │ │ Marketing Emails    │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │            Monitoring & Analytics                       │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ CloudWatch  │ │ X-Ray       │ │ QuickSight          │ │ │
+│  │  │ Monitoring  │ │ Distributed │ │ Business            │ │ │
+│  │  │ Metrics     │ │ Tracing     │ │ Intelligence        │ │ │
+│  │  │ Alarms      │ │ Performance │ │ Data Visualization  │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ Kinesis     │ │ OpenSearch  │ │ Cost Explorer       │ │ │
+│  │  │ Real-time   │ │ Search &    │ │ Cost Management     │ │ │
+│  │  │ Data Stream │ │ Analytics   │ │ Budget Alerts       │ │ │
+│  │  │ Processing  │ │ Log Analysis│ │ Usage Optimization  │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Regional AWS Infrastructure for India**
+
+```mermaid
+graph TB
+    subgraph "AWS Regions in India"
+        Mumbai[🏙️ Asia Pacific Mumbai - ap-south-1]
+        Hyderabad[🏛️ Asia Pacific Hyderabad - ap-south-2]
+    end
+    
+    subgraph "Edge Locations"
+        Mumbai_Edge[📍 Mumbai Edge - 5 locations]
+        Delhi_Edge[📍 Delhi Edge - 3 locations]
+        Chennai_Edge[📍 Chennai Edge - 2 locations]
+        Bangalore_Edge[📍 Bangalore Edge - 2 locations]
+        Kolkata_Edge[📍 Kolkata Edge - 1 location]
+        Pune_Edge[📍 Pune Edge - 1 location]
+    end
+    
+    subgraph "Primary Services Distribution"
+        Mumbai --> Primary_Compute[🖥️ Primary Compute & AI Services]
+        Mumbai --> Primary_Database[🗄️ Primary Database & Storage]
+        Hyderabad --> DR_Services[🔄 Disaster Recovery]
+        Hyderabad --> Analytics[📊 Analytics & ML Training]
+    end
+    
+    subgraph "User Distribution"
+        North_Users[👥 North India - 40M users]
+        West_Users[👥 West India - 35M users]
+        South_Users[👥 South India - 30M users]
+        East_Users[👥 East India - 20M users]
+    end
+    
+    Mumbai_Edge --> West_Users
+    Delhi_Edge --> North_Users
+    Chennai_Edge --> South_Users
+    Bangalore_Edge --> South_Users
+    Kolkata_Edge --> East_Users
+    
+    Primary_Compute --> Mumbai_Edge
+    Primary_Database --> Mumbai_Edge
+    DR_Services --> Hyderabad
+    Analytics --> Hyderabad
+```
+
+### **Data Flow Architecture with AWS Services**
+
+```mermaid
+sequenceDiagram
+    participant User as 👤 User
+    participant CF as 🌍 CloudFront
+    participant WAF as 🛡️ WAF
+    participant ALB as ⚖️ Load Balancer
+    participant EC2 as 🖥️ EC2 Instance
+    participant RDS as 🗄️ RDS PostgreSQL
+    participant S3 as 📦 S3 Storage
+    participant Bedrock as 🤖 Bedrock AI
+    participant Rekognition as 👁️ Rekognition
+    participant SNS as 📱 SNS
+    
+    User->>CF: Upload skill image
+    CF->>WAF: Security check
+    WAF->>ALB: Route request
+    ALB->>EC2: Process upload
+    EC2->>S3: Store image
+    EC2->>Rekognition: Analyze image
+    Rekognition->>Bedrock: Get AI assessment
+    Bedrock->>EC2: Return skill analysis
+    EC2->>RDS: Store results
+    EC2->>SNS: Send notification
+    SNS->>User: Push notification
+    EC2->>CF: Return response
+    CF->>User: Display results
+```
+
+### **AI Services Integration Flow**
+
+```mermaid
+graph TB
+    subgraph "SkillScan AI Pipeline"
+        Upload[📤 Image Upload] --> S3[📦 S3 Storage]
+        S3 --> Rekognition[👁️ Amazon Rekognition]
+        Rekognition --> Analysis[🔍 Custom Labels Analysis]
+        Analysis --> Bedrock[🤖 Amazon Bedrock]
+        Bedrock --> Claude[🧠 Claude 3 Model]
+        Claude --> Assessment[📊 Skill Assessment]
+        Assessment --> Personalize[🎯 Amazon Personalize]
+        Personalize --> Recommendations[💡 Learning Recommendations]
+    end
+    
+    subgraph "Voice & Language Processing"
+        VoiceInput[🎤 Voice Input] --> Transcribe[📝 Amazon Transcribe]
+        Transcribe --> Comprehend[📖 Amazon Comprehend]
+        Comprehend --> Translation[🌐 Language Translation]
+        Translation --> Polly[🔊 Amazon Polly]
+        Polly --> VoiceOutput[🔊 Voice Response]
+    end
+    
+    subgraph "Intelligent Chatbot"
+        UserQuery[❓ User Query] --> Q[💬 Amazon Q]
+        Q --> BusinessLogic[🧠 Business Intelligence]
+        BusinessLogic --> ContextualResponse[💭 Contextual Response]
+        ContextualResponse --> PersonalizedAdvice[🎯 Personalized Advice]
+    end
+    
+    Assessment --> UserQuery
+    Recommendations --> VoiceInput
+    PersonalizedAdvice --> Upload
+```
+
+### **Cost Optimization Architecture**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                AWS Cost Optimization Strategy               │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                Compute Optimization                     │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ Reserved    │ │ Spot        │ │ Auto Scaling        │ │ │
+│  │  │ Instances   │ │ Instances   │ │ Groups              │ │ │
+│  │  │ 1-3 year    │ │ 70% savings │ │ Dynamic scaling     │ │ │
+│  │  │ commitment  │ │ for batch   │ │ based on demand     │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                Storage Optimization                     │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ S3          │ │ Intelligent │ │ Lifecycle           │ │ │
+│  │  │ Standard    │ │ Tiering     │ │ Policies            │ │ │
+│  │  │ Frequent    │ │ Auto-move   │ │ Auto-archive        │ │ │
+│  │  │ Access      │ │ data        │ │ old data            │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │                 AI/ML Optimization                      │ │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │ │
+│  │  │ Bedrock     │ │ SageMaker   │ │ Batch Processing    │ │ │
+│  │  │ On-demand   │ │ Spot        │ │ Off-peak hours      │ │ │
+│  │  │ pricing     │ │ Training    │ │ Cost optimization   │ │ │
+│  │  │ Pay per use │ │ 70% savings │ │ Scheduled jobs      │ │ │
+│  │  └─────────────┘ └─────────────┘ └─────────────────────┘ │ │
+│  └─────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Security Architecture with AWS Services**
+
+```mermaid
+graph TB
+    subgraph "Security Layers"
+        WAF[🛡️ AWS WAF - Web Application Firewall]
+        Shield[🛡️ AWS Shield - DDoS Protection]
+        GuardDuty[🔍 Amazon GuardDuty - Threat Detection]
+        Inspector[🔍 Amazon Inspector - Vulnerability Assessment]
+    end
+    
+    subgraph "Identity & Access"
+        Cognito[🔐 Amazon Cognito - User Authentication]
+        IAM[👤 AWS IAM - Access Management]
+        SecretsManager[🔑 AWS Secrets Manager]
+        KMS[🔐 AWS KMS - Key Management]
+    end
+    
+    subgraph "Data Protection"
+        S3Encryption[🔒 S3 Server-Side Encryption]
+        RDSEncryption[🔒 RDS Encryption at Rest]
+        TransitEncryption[🔒 TLS/SSL in Transit]
+        VPC[🏠 Amazon VPC - Network Isolation]
+    end
+    
+    subgraph "Compliance & Auditing"
+        CloudTrail[📋 AWS CloudTrail - API Logging]
+        Config[⚙️ AWS Config - Compliance Monitoring]
+        Macie[🔍 Amazon Macie - Data Classification]
+        SecurityHub[🏢 AWS Security Hub - Central Dashboard]
+    end
+    
+    WAF --> Shield
+    Shield --> GuardDuty
+    GuardDuty --> Inspector
+    
+    Cognito --> IAM
+    IAM --> SecretsManager
+    SecretsManager --> KMS
+    
+    S3Encryption --> RDSEncryption
+    RDSEncryption --> TransitEncryption
+    TransitEncryption --> VPC
+    
+    CloudTrail --> Config
+    Config --> Macie
+    Macie --> SecurityHub
+```
+
 ## Scalability Considerations
 
 ### Frontend Scalability
