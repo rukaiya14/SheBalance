@@ -30,7 +30,7 @@ India's women artisans possess extraordinary traditional craft skills but remain
 - **Pain Points**: Difficulty finding skilled artisans, no quality assurance, inconsistent delivery
 - **Goals**: Source verified artisan work, build reliable supply chains, access authentic crafts
 
-#### 3. Corporate Buyer - "Rajesh" (B2B Demand)
+#### 3. Corporate Buyer - "Rani" (B2B Demand)
 - **Demographics**: Age 35-55, Corporate procurement/CSR roles
 - **Budget**: Significant budget for artisan partnerships
 - **Pain Points**: Need scalable verified networks, ESG compliance, quality consistency
