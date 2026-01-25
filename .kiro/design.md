@@ -9,58 +9,138 @@ SheBalance leverages a serverless-first cloud architecture to transform India's 
 ### Architecture Overview
 ```mermaid
 graph TB
+    %% Define styles for different service categories
+    classDef userInterface fill:#E8F4FD,stroke:#1976D2,stroke-width:2px,color:#000
+    classDef security fill:#FFF3E0,stroke:#F57C00,stroke-width:2px,color:#000
+    classDef compute fill:#E8F5E8,stroke:#388E3C,stroke-width:2px,color:#000
+    classDef ai fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#000
+    classDef storage fill:#FFF8E1,stroke:#FBC02D,stroke-width:2px,color:#000
+    classDef user fill:#FFEBEE,stroke:#D32F2F,stroke-width:2px,color:#000
+
+    %% User Layer
+    User[👤 Artisan Users]:::user
+    
+    %% User Interface Layer
     subgraph "User Interface Layer"
-        WA[WhatsApp Business API]
-        PWA[Progressive Web App]
-        Voice[Voice Interface]
+        WA[📱 WhatsApp Business API<br/>Voice & Chat Interface]:::userInterface
+        PWA[💻 Progressive Web App<br/>React.js + TypeScript]:::userInterface
+        Voice[🎤 Voice Interface<br/>Speech Recognition]:::userInterface
     end
     
+    %% API Gateway & Security Layer
     subgraph "API Gateway & Security"
-        APIG[AWS API Gateway]
-        WAF[AWS WAF]
-        Cognito[Amazon Cognito]
+        APIG[🚪 AWS API Gateway<br/>REST & WebSocket APIs]:::security
+        WAF[🛡️ AWS WAF<br/>DDoS Protection]:::security
+        Cognito[🔐 Amazon Cognito<br/>Authentication & Authorization]:::security
     end
     
+    %% Serverless Compute Layer
     subgraph "Serverless Compute Layer"
-        Lambda1[Skill Assessment Lambda]
-        Lambda2[Matching Engine Lambda]
-        Lambda3[Voice Processing Lambda]
-        Lambda4[WhatsApp Bot Lambda]
+        Lambda1[⚡ Skill Assessment Lambda<br/>Computer Vision Processing]:::compute
+        Lambda2[🎯 Matching Engine Lambda<br/>AI-Powered Job Matching]:::compute
+        Lambda3[🗣️ Voice Processing Lambda<br/>Speech-to-Text & NLP]:::compute
+        Lambda4[🤖 WhatsApp Bot Lambda<br/>Conversational AI]:::compute
     end
     
+    %% AI/ML Services Layer
     subgraph "AI/ML Services"
-        Bedrock[Amazon Bedrock - Claude 3]
-        Rekognition[Amazon Rekognition]
-        SageMaker[Amazon SageMaker]
-        Polly[Amazon Polly]
-        Transcribe[Amazon Transcribe]
-        Q[Amazon Q Business]
+        Bedrock[🧠 Amazon Bedrock<br/>Claude 3 Sonnet LLM]:::ai
+        Rekognition[👁️ Amazon Rekognition<br/>Custom Labels for Crafts]:::ai
+        SageMaker[🤖 Amazon SageMaker<br/>Custom ML Models & Training]:::ai
+        Polly[🔊 Amazon Polly<br/>Text-to-Speech]:::ai
+        Transcribe[📝 Amazon Transcribe<br/>Speech-to-Text]:::ai
+        Q[❓ Amazon Q Business<br/>Intelligent Query Processing]:::ai
     end
     
+    %% Data & Storage Layer
     subgraph "Data & Storage"
-        DynamoDB[Amazon DynamoDB]
-        S3[Amazon S3]
-        RDS[Amazon RDS Aurora]
-        ElastiCache[Amazon ElastiCache]
+        DynamoDB[🗄️ Amazon DynamoDB<br/>User Profiles & Skills]:::storage
+        S3[📦 Amazon S3<br/>Images & Media Storage]:::storage
+        RDS[🗃️ Amazon RDS Aurora<br/>Transactional Data]:::storage
+        ElastiCache[⚡ Amazon ElastiCache<br/>Session & Cache Data]:::storage
     end
     
+    %% User to Interface Connections
+    User --> WA
+    User --> PWA
+    User --> Voice
+    
+    %% Interface to API Gateway
     WA --> APIG
     PWA --> APIG
     Voice --> APIG
+    
+    %% API Gateway Security Flow
     APIG --> WAF
-    WAF --> Lambda1
-    Lambda1 --> Bedrock
+    WAF --> Cognito
+    
+    %% Cognito to Lambda Authentication
+    Cognito --> Lambda1
+    Cognito --> Lambda2
+    Cognito --> Lambda3
+    Cognito --> Lambda4
+    
+    %% Lambda 1 (Skill Assessment) Bidirectional Flows
+    Lambda1 <--> DynamoDB
+    Lambda1 <--> S3
     Lambda1 --> Rekognition
-    Lambda1 --> SageMaker
+    Lambda1 <--> SageMaker
+    Lambda1 --> Bedrock
+    
+    %% Lambda 2 (Matching Engine) Bidirectional Flows
+    Lambda2 <--> DynamoDB
+    Lambda2 <--> RDS
+    Lambda2 <--> SageMaker
     Lambda2 --> Q
-    Lambda2 --> SageMaker
-    Lambda3 --> Polly
+    Lambda2 <--> S3
+    
+    %% Lambda 3 (Voice Processing) Bidirectional Flows
+    Lambda3 <--> ElastiCache
+    Lambda3 <--> DynamoDB
     Lambda3 --> Transcribe
-    Lambda1 --> DynamoDB
-    Lambda1 --> S3
+    Lambda3 --> Polly
+    
+    %% Lambda 4 (WhatsApp Bot) Bidirectional Flows
+    Lambda4 <--> DynamoDB
+    Lambda4 <--> ElastiCache
+    Lambda4 <--> S3
+    Lambda4 --> Bedrock
+    
+    %% SageMaker Training & Inference Flows
+    SageMaker <--> S3
+    SageMaker <--> DynamoDB
+    SageMaker --> Rekognition
+    
+    %% AI Services Data Flows
+    Bedrock --> DynamoDB
+    Q <--> RDS
+    Q <--> DynamoDB
+    
+    %% Storage Interconnections
+    DynamoDB <--> ElastiCache
+    RDS <--> S3
+    
+    %% Feedback Loops for ML Training
+    DynamoDB -.-> SageMaker
+    S3 -.-> SageMaker
+    RDS -.-> SageMaker
 ```
 
 **Why Serverless**: Enables rapid scaling from 1,000 to 1,000,000 users without infrastructure management, reduces operational costs by 60%, and provides automatic high availability across multiple regions.
+
+### Key Architectural Patterns
+
+**Bidirectional Data Flows**: The architecture implements realistic data exchange patterns where services both read from and write to data stores, enabling:
+- **DynamoDB as Central Hub**: All Lambda functions read user profiles and write results back
+- **SageMaker ML Training Loops**: Continuous model improvement using operational data from DynamoDB, S3, and RDS
+- **Caching Strategy**: ElastiCache provides high-performance data access for frequently requested information
+- **Feedback Loops**: User interactions and outcomes feed back into ML models for continuous improvement
+
+**Real-World Service Interactions**:
+- **Lambda ↔ DynamoDB**: Read user data, write assessment results and match outcomes
+- **SageMaker ↔ S3**: Model artifacts storage, training data access, inference result caching
+- **Lambda ↔ SageMaker**: Real-time model inference calls for skill assessment and matching
+- **Storage Interconnections**: Data flows between DynamoDB, S3, and RDS for analytics and backup
 
 ## Major Components
 **Defined roles for the frontend, backend, and AI services**
