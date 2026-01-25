@@ -1,140 +1,130 @@
-# SheBalance - AI-Powered Artisan-as-a-Service Incubator
+# SheBalance - AI-Powered Artisan-as-a-Service Platform
 ## Requirements Document
 
-## Executive Summary
-SheBalance is a revolutionary AI-powered artisan-as-a-service incubator that transforms India's 200+ million women artisans from invisible contributors to verified income generators. By leveraging computer vision, natural language processing, and intelligent matching algorithms, we bridge the gap between informal talent and global market demand through a "Snap → Score → Earn" methodology.
+## The Problem
+**What specific gap are you closing?**
 
-## Problem Statement: The Invisible Labor Crisis
+India's women artisans possess extraordinary traditional craft skills but remain trapped in an invisible economy. Despite creating immense value through household labor and artisan work, most earn minimal income due to:
 
-### The Hidden Economy
-- **200+ million women** in India possess traditional craft skills but lack formal recognition
-- **₹15 trillion worth** of unpaid household labor goes unrecognized annually
-- **80% of women artisans** earn less than ₹5,000/month despite possessing marketable skills
-- **Traditional platforms miss 90%** of women's economic potential due to language barriers and skill validation challenges
+- **Skill Invisibility**: No formal recognition or validation of traditional craft expertise
+- **Market Disconnect**: Limited access to quality-conscious buyers willing to pay fair prices  
+- **Time Fragmentation**: Household responsibilities prevent consistent income generation
+- **Language Barriers**: Digital platforms exclude non-English speakers
+- **Pricing Undervaluation**: Artisans undercharge for their work due to lack of market intelligence
 
-### Market Gap Analysis
-**Supply Side (Rural/Urban Artisans)**:
-- Lack of skill verification and credentialing systems
-- No access to fair pricing mechanisms or market intelligence
-- Limited digital literacy and English proficiency barriers
-- Absence of time optimization tools for household-career balance
+## The User
+**Who exactly are you building for?**
 
-**Demand Side (Urban Buyers/Boutiques)**:
-- Difficulty finding verified, skilled artisans at scale
-- No quality assurance or skill validation mechanisms
-- Fragmented supply chain with inconsistent delivery
-- Limited access to authentic, traditional craftsmanship
+### Primary Users
 
-### The SheBalance Solution
-An AI-first platform that **quantifies invisible labor**, **validates traditional skills**, and **creates sustainable income pathways** through intelligent technology integration.
+#### 1. Rural Artisan - "Sunita" (Supply Side)
+- **Demographics**: Age 28-45, Rural/Semi-urban India, basic education
+- **Skills**: Traditional embroidery, weaving, pottery with years of experience
+- **Current Income**: Irregular, minimal earnings
+- **Pain Points**: Cannot articulate skill level, undervalues work, limited market access
+- **Goals**: Earn consistent income, gain skill recognition, work flexible hours
 
-## Target Market & User Personas
+#### 2. Urban Buyer - "Priya" (Demand Side)  
+- **Demographics**: Age 30-50, Metro cities, Fashion boutique/e-commerce owner
+- **Business**: Established retail or online business
+- **Pain Points**: Difficulty finding skilled artisans, no quality assurance, inconsistent delivery
+- **Goals**: Source verified artisan work, build reliable supply chains, access authentic crafts
 
-### Primary User Personas
+#### 3. Corporate Buyer - "Rajesh" (B2B Demand)
+- **Demographics**: Age 35-55, Corporate procurement/CSR roles
+- **Budget**: Significant budget for artisan partnerships
+- **Pain Points**: Need scalable verified networks, ESG compliance, quality consistency
+- **Goals**: Build sustainable supply chains, meet CSR targets, demonstrate social impact
 
-#### 1. Rural Artisan (Supply Side) - "Sunita"
-**Demographics**: 
-- Age: 28-45, Rural/Semi-urban India
-- Education: 5th-12th standard, limited English
-- Skills: Traditional embroidery, 15+ years experience
-- Current Income: ₹2,000-5,000/month (irregular)
+## The AI Edge
+**Why is AI the essential tool for this solution?**
 
-**Pain Points**:
-- Cannot articulate skill level ("I know some stitching")
-- Undervalues work (charges ₹50 for 8-hour embroidery)
-- Limited market access beyond local customers
-- Household responsibilities limit working hours
+SheBalance cannot function without AI because traditional skill assessment, market matching, and time optimization are impossible to scale manually:
 
-**Goals**:
-- Earn ₹15,000-25,000/month consistently
-- Gain recognition for traditional skills
-- Work flexible hours around household duties
-- Access training for skill enhancement
+### 1. **Invisible Labor Quantification**
+- **AI Solution**: Computer vision automatically identifies and categorizes household tasks
+- **Why Essential**: Manual time-tracking fails to capture complex household work patterns
+- **Impact**: Transforms unmeasured labor into optimized income opportunities
 
-#### 2. Urban Buyer/Boutique Owner (Demand Side) - "Priya"
-**Demographics**:
-- Age: 30-50, Metro cities (Mumbai, Delhi, Bangalore)
-- Business: Fashion boutique, home decor, or e-commerce
-- Revenue: ₹50L-5Cr annually
+### 2. **Objective Skill Validation** 
+- **AI Solution**: Multi-modal assessment through image analysis and voice demonstrations
+- **Why Essential**: Self-reported skills lack credibility; manual assessment doesn't scale
+- **Impact**: Creates trusted skill credentials that command fair market pricing
 
-**Pain Points**:
-- Difficulty finding skilled, reliable artisans
-- No quality assurance or skill verification
-- Inconsistent delivery timelines
-- Limited access to authentic traditional crafts
+### 3. **Intelligent Opportunity Matching**
+- **AI Solution**: Context-aware matching considering time, location, skills, and constraints
+- **Why Essential**: Generic job boards ignore women's unique household responsibilities
+- **Impact**: Delivers relevant opportunities that fit real-world constraints
 
-**Goals**:
-- Source high-quality, verified artisan work
-- Build reliable supply chain partnerships
-- Access unique, traditional craftsmanship
-- Scale business with consistent quality
+### 4. **Voice-First Regional Interface**
+- **AI Solution**: Advanced speech recognition and NLP in multiple Indian languages
+- **Why Essential**: Text interfaces exclude users with limited digital literacy
+- **Impact**: Makes platform accessible to target demographic through familiar voice interaction
 
-#### 3. Corporate Buyer (B2B Demand) - "Rajesh"
-**Demographics**:
-- Age: 35-55, Corporate procurement/CSR roles
-- Companies: Fashion brands, hotels, export houses
-- Budget: ₹10L-50Cr for artisan partnerships
+## The Success Metric
+**What does a "win" look like?**
 
-**Pain Points**:
-- Need for scalable, verified artisan networks
-- Compliance with ESG and sustainability goals
-- Quality consistency across large orders
-- Transparent impact measurement
+### Individual Artisan Success
+- **Income Growth**: Significant increase in average monthly income
+- **Earning Consistency**: Artisans achieve predictable monthly income within months
+- **Pricing Optimization**: Substantial increase in per-piece pricing through skill validation
+- **Time Efficiency**: Reduction in time-to-income through optimized scheduling
 
-**Goals**:
-- Build sustainable supply chains
-- Meet CSR and sustainability targets
-- Access authentic Indian craftsmanship
-- Demonstrate measurable social impact
+### Platform Business Metrics
+- **Revenue Growth**: Strong GMV growth with sustainable platform commission
+- **User Acquisition**: Large number of verified artisans on platform
+- **Market Penetration**: Significant portion of skilled women artisans using platform
+- **Quality Assurance**: High buyer satisfaction rating
 
-### Market Size & Opportunity
-- **Total Addressable Market (TAM)**: ₹2.5 trillion (Global handicrafts market)
-- **Serviceable Addressable Market (SAM)**: ₹50,000 crores (Indian handicrafts + women's economic participation)
-- **Serviceable Obtainable Market (SOM)**: ₹5,000 crores (AI-enabled artisan services in India by 2030)
+### Social Impact Indicators
+- **Financial Independence**: Artisans report increased household decision-making power
+- **Skill Recognition**: Artisans receive formal skill certification
+- **Work-Life Balance**: Improvement in self-reported balance scores
+- **Family Investment**: Artisans invest increased earnings in children's education
 
-## Core Value Proposition: "Snap → Score → Earn"
+## The Features
+**The core functionality that delivers value**
 
-### Revolutionary AI-Powered Skill Validation
-**The Problem**: Traditional skill assessment is subjective, time-consuming, and doesn't scale
-**Our Solution**: Computer vision + AI analysis provides instant, objective skill scoring
+### Core Value Proposition: "Snap → Score → Earn"
 
-**The Process**:
+**Revolutionary AI-Powered Skill Validation**
 1. **SNAP**: Artisan uploads photos of their work via WhatsApp/Web
-2. **SCORE**: AI analyzes technique, quality, complexity, and market value
+2. **SCORE**: AI analyzes technique, quality, complexity, and market value  
 3. **EARN**: Verified artisans get matched to appropriate opportunities with fair pricing
 
-### Unique Competitive Advantages
+### Feature Categories
 
-#### 1. Voice-First, WhatsApp-Native Experience
-- **Zero app downloads required** - works on any smartphone
-- **Regional language support** - Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati
-- **Low bandwidth optimization** - works on 2G/3G networks
-- **Familiar interface** - leverages existing WhatsApp usage patterns
+#### 1. **Voice-First WhatsApp Experience**
+- Zero app downloads required - works on any smartphone
+- Regional language support - Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati
+- Low bandwidth optimization - works on 2G/3G networks
+- Familiar interface leveraging existing WhatsApp usage patterns
 
-#### 2. AI Skill Assessment Engine
-- **Computer vision analysis** of craft quality and technique
-- **Objective scoring system** preventing bias and ensuring fairness
-- **Skill progression tracking** with personalized improvement recommendations
-- **Market value estimation** based on skill level and demand patterns
+#### 2. **AI Skill Assessment Engine**
+- Computer vision analysis of craft quality and technique
+- Objective scoring system preventing bias and ensuring fairness
+- Skill progression tracking with personalized improvement recommendations
+- Market value estimation based on skill level and demand patterns
 
-#### 3. Invisible Labor Optimization
-- **Time audit algorithms** that identify household work patterns
-- **Optimal scheduling** that maximizes earning potential within constraints
-- **Guilt-free career development** by respecting family responsibilities
-- **Efficiency recommendations** to save 2-4 hours daily for income generation
+#### 3. **Invisible Labor Optimization**
+- Time audit algorithms identifying household work patterns
+- Optimal scheduling maximizing earning potential within constraints
+- Guilt-free career development respecting family responsibilities
+- Efficiency recommendations saving hours daily for income generation
 
-#### 4. Intelligent Marketplace Matching
-- **Demand prediction** based on seasonal patterns and market trends
-- **Quality-conscious buyer identification** to ensure fair pricing
-- **Skill-opportunity alignment** matching artisan capabilities to market needs
-- **Dynamic pricing recommendations** based on skill level and market conditions
+#### 4. **Intelligent Marketplace Matching**
+- Demand prediction based on seasonal patterns and market trends
+- Quality-conscious buyer identification ensuring fair pricing
+- Skill-opportunity alignment matching capabilities to market needs
+- Dynamic pricing recommendations based on skill level and market conditions
 
 ## Functional Requirements
 
 ### 1. Voice-First WhatsApp Onboarding System
+
 **REQ-001**: WhatsApp Bot Integration
 - Native WhatsApp Business API integration for seamless onboarding
-- Multi-language voice message processing (6+ Indian languages)
+- Multi-language voice message processing in Indian languages
 - Automated skill discovery through conversational AI
 - Zero-download experience with familiar interface
 
@@ -151,6 +141,7 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Completion tracking with motivational messaging
 
 ### 2. AI Skill Assessment Engine (Computer Vision)
+
 **REQ-004**: Multi-Modal Skill Analysis
 - Computer vision analysis of craft photos (embroidery, weaving, pottery, jewelry)
 - Technique quality assessment using deep learning models
@@ -158,8 +149,8 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Color coordination and aesthetic analysis
 
 **REQ-005**: Objective Scoring Algorithm
-- Standardized scoring system (1-100 scale) across all craft categories
-- Skill level classification: Beginner (1-40), Intermediate (41-70), Advanced (71-100)
+- Standardized scoring system across all craft categories
+- Skill level classification: Beginner, Intermediate, Advanced
 - Quality consistency tracking across multiple submissions
 - Bias prevention through diverse training datasets
 
@@ -176,6 +167,7 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Achievement milestones and certification levels
 
 ### 3. Time-Optimization Scheduling System
+
 **REQ-008**: Invisible Labor Audit
 - Household work pattern recognition through time tracking
 - Daily routine optimization algorithms
@@ -195,6 +187,7 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Revenue forecasting and goal setting
 
 ### 4. Intelligent Marketplace & Matching
+
 **REQ-011**: Demand Prediction Engine
 - Seasonal pattern analysis for different craft categories
 - Festival and event-based demand forecasting
@@ -220,6 +213,7 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Price optimization based on buyer behavior patterns
 
 ### 5. WhatsApp-Native Business Operations
+
 **REQ-015**: Order Management via WhatsApp
 - Automated order confirmation and tracking
 - Photo-based progress updates and milestone sharing
@@ -239,6 +233,7 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Success story documentation and sharing
 
 ### 6. AI-Powered Learning & Development
+
 **REQ-018**: Personalized Skill Enhancement
 - Technique improvement recommendations based on AI analysis
 - Video tutorial curation in regional languages
@@ -258,6 +253,7 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Industry partnership for formal skill recognition
 
 ### 7. Financial Inclusion & Literacy
+
 **REQ-021**: Digital Payment Integration
 - UPI and digital wallet integration for seamless transactions
 - Escrow service for secure payment processing
@@ -276,108 +272,8 @@ An AI-first platform that **quantifies invisible labor**, **validates traditiona
 - Partnership with financial institutions for artisan-specific products
 - Insurance coverage for work-related risks and equipment
 
-## Success Metrics & Impact Measurement
-
-### Financial Impact Targets
-**Individual Artisan Success**:
-- **Income Growth**: ₹3,000 → ₹25,000 average monthly income (733% increase)
-- **Earning Consistency**: 90% of artisans achieve predictable monthly income within 6 months
-- **Pricing Optimization**: 300% average increase in per-piece pricing through skill validation
-- **Time Efficiency**: 40% reduction in time-to-income through optimized scheduling
-
-**Platform Business Metrics**:
-- **Revenue Growth**: ₹100 crores GMV by Year 3 with 15% platform commission
-- **User Acquisition**: 1 million verified artisans by 2027
-- **Market Penetration**: 25% of India's skilled women artisans on platform
-- **Transaction Volume**: ₹50,000 average monthly transactions per active artisan
-
-### Social Impact Indicators
-**Women's Economic Empowerment**:
-- **Financial Independence**: 80% of artisans report increased household decision-making power
-- **Skill Recognition**: 95% of artisans receive formal skill certification within 12 months
-- **Career Progression**: 60% of artisans advance from Beginner to Intermediate+ within 18 months
-- **Community Leadership**: 40% of advanced artisans become mentors for new users
-
-**Household & Family Impact**:
-- **Work-Life Balance**: 85% improvement in self-reported work-life balance scores
-- **Time Optimization**: Average 3.5 hours daily saved through efficiency recommendations
-- **Family Support**: 70% report increased family support for income-generating activities
-- **Child Education**: 90% invest increased earnings in children's education and development
-
-### Technology Performance Metrics
-**AI System Accuracy**:
-- **Skill Assessment**: 95%+ accuracy in skill level classification validated by expert review
-- **Voice Recognition**: 98%+ accuracy for supported regional languages
-- **Demand Prediction**: 85%+ accuracy in seasonal and trend forecasting
-- **Quality Scoring**: 92%+ correlation with expert human evaluation
-
-**Platform Engagement**:
-- **User Retention**: 80% monthly active user retention rate
-- **Feature Adoption**: 90% of users complete full skill assessment within 30 days
-- **WhatsApp Engagement**: 75% of interactions happen via WhatsApp interface
-- **Learning Completion**: 70% course completion rate for enrolled artisans
-
-### Market Transformation Indicators
-**Supply Chain Impact**:
-- **Quality Standardization**: 95% of platform artisans meet or exceed buyer quality expectations
-- **Delivery Reliability**: 90% on-time delivery rate for platform-facilitated orders
-- **Price Transparency**: 100% of transactions include transparent pricing breakdown
-- **Skill Verification**: 99% of platform artisans have AI-verified skill credentials
-
-**Buyer Satisfaction**:
-- **Quality Assurance**: 4.8/5 average buyer satisfaction rating
-- **Repeat Business**: 70% of buyers place multiple orders within 12 months
-- **Cost Efficiency**: 30% reduction in buyer sourcing costs through platform efficiency
-- **Authenticity Guarantee**: 100% authenticity verification for traditional craft techniques
-
-## Risk Assessment & Mitigation
-
-### Technology Risks
-**AI Bias & Accuracy**:
-- Risk: Cultural bias in computer vision models affecting skill assessment
-- Mitigation: Diverse training datasets, regular bias audits, expert validation panels
-
-**Scalability Challenges**:
-- Risk: System performance degradation with rapid user growth
-- Mitigation: Serverless architecture, auto-scaling infrastructure, performance monitoring
-
-### Market Risks
-**Competition from Established Players**:
-- Risk: Large e-commerce platforms launching similar services
-- Mitigation: Deep AI differentiation, strong artisan relationships, continuous innovation
-
-**Economic Downturn Impact**:
-- Risk: Reduced demand for handicrafts during economic stress
-- Mitigation: Diversified product categories, essential goods integration, export market focus
-
-### Social & Cultural Risks
-**Digital Divide & Adoption**:
-- Risk: Limited smartphone penetration in rural areas
-- Mitigation: WhatsApp-first approach, voice interface, offline capability, community centers
-
-**Cultural Resistance**:
-- Risk: Traditional communities resistant to technology adoption
-- Mitigation: Community leader engagement, success story showcasing, gradual introduction
-
-## Regulatory & Compliance Framework
-
-### Data Protection & Privacy
-- **Personal Data Protection**: Full compliance with India's Digital Personal Data Protection Act
-- **Financial Data Security**: PCI DSS compliance for payment processing
-- **Cross-Border Data**: Compliance with data localization requirements
-
-### Labor & Employment
-- **Gig Economy Regulations**: Compliance with emerging platform worker protection laws
-- **Skill Certification**: Partnership with government skill development initiatives
-- **Fair Trade Practices**: Adherence to fair trade principles and ethical sourcing standards
-
-### Financial Services
-- **Digital Payments**: RBI compliance for payment aggregation and processing
-- **Micro-Finance**: NBFC regulations for credit and lending services
-- **Tax Compliance**: Automated GST calculation and filing support for artisans
-
 ---
 
-**Document Version**: 3.0 - Investment Ready  
+**Document Version**: 2.0 - Specs Compliant  
 **Last Updated**: January 25, 2026  
-**Status**: Series A Funding Preparation - Comprehensive Market Analysis Complete
+**Status**: Requirements Complete
