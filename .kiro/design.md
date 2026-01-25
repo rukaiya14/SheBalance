@@ -31,6 +31,7 @@ graph TB
     subgraph "AI/ML Services"
         Bedrock[Amazon Bedrock - Claude 3]
         Rekognition[Amazon Rekognition]
+        SageMaker[Amazon SageMaker]
         Polly[Amazon Polly]
         Transcribe[Amazon Transcribe]
         Q[Amazon Q Business]
@@ -50,7 +51,9 @@ graph TB
     WAF --> Lambda1
     Lambda1 --> Bedrock
     Lambda1 --> Rekognition
+    Lambda1 --> SageMaker
     Lambda2 --> Q
+    Lambda2 --> SageMaker
     Lambda3 --> Polly
     Lambda3 --> Transcribe
     Lambda1 --> DynamoDB
@@ -78,6 +81,7 @@ graph TB
 ### AI/ML Services Components
 - **Foundation Models**: Amazon Bedrock with Claude 3 Sonnet for conversational AI
 - **Computer Vision**: Amazon Rekognition Custom Labels for craft skill assessment
+- **Custom ML Models**: Amazon SageMaker for training specialized craft recognition and matching algorithms
 - **Speech Processing**: Amazon Polly (text-to-speech) and Transcribe (speech-to-text)
 - **Business Intelligence**: Amazon Q for intelligent query processing and insights
 
@@ -133,6 +137,7 @@ Action Execution → Database Update → Confirmation
 ### AI/ML Integration Strategy
 - **Amazon Bedrock**: Primary AI service for conversational interfaces and content generation
 - **Amazon Rekognition**: Custom models trained on traditional Indian craft images
+- **Amazon SageMaker**: Custom ML model development, training, and deployment for specialized craft recognition and intelligent matching algorithms
 - **Amazon Transcribe**: Multi-language speech recognition with custom vocabulary
 - **Amazon Polly**: Neural text-to-speech in regional Indian languages
 - **Amazon Q Business**: Intelligent query processing and business insights
@@ -154,26 +159,33 @@ Action Execution → Database Update → Confirmation
 
 ### AI Skill Assessment Logic
 ```javascript
-// Skill Assessment Pipeline
+// Skill Assessment Pipeline with SageMaker Integration
 const assessSkill = async (imageData, category) => {
   // 1. Image preprocessing and validation
   const processedImage = await preprocessImage(imageData);
   
-  // 2. Rekognition Custom Labels analysis
+  // 2. SageMaker custom model inference for craft-specific analysis
+  const sagemakerResults = await sagemaker.invokeEndpoint({
+    EndpointName: `craft-assessment-${category}`,
+    ContentType: 'application/json',
+    Body: JSON.stringify({ image: processedImage })
+  });
+  
+  // 3. Rekognition Custom Labels for additional validation
   const visionResults = await rekognition.detectCustomLabels({
     Image: processedImage,
     ProjectVersionArn: CRAFT_MODEL_ARN
   });
   
-  // 3. Multi-criteria scoring algorithm
+  // 4. Multi-criteria scoring algorithm combining both models
   const scores = {
-    technique: calculateTechniqueScore(visionResults),
-    complexity: assessComplexity(visionResults),
+    technique: calculateTechniqueScore(sagemakerResults, visionResults),
+    complexity: assessComplexity(sagemakerResults),
     quality: evaluateQuality(visionResults),
     marketValue: estimateMarketValue(category, scores)
   };
   
-  // 4. Bedrock AI for contextual feedback
+  // 5. Bedrock AI for contextual feedback
   const feedback = await bedrock.generateFeedback(scores, category);
   
   return {
@@ -187,7 +199,7 @@ const assessSkill = async (imageData, category) => {
 
 ### Intelligent Matching Logic
 ```javascript
-// Opportunity Matching Algorithm
+// Opportunity Matching Algorithm with SageMaker ML Models
 const matchArtisans = async (buyerRequirements) => {
   // 1. Query eligible artisans from DynamoDB
   const eligibleArtisans = await queryArtisansBySkill(
@@ -202,11 +214,21 @@ const matchArtisans = async (buyerRequirements) => {
     matchesCapacityConstraints(artisan, buyerRequirements)
   );
   
-  // 3. AI-powered ranking using Amazon Q
-  const rankedMatches = await amazonQ.rankMatches({
-    artisans: filteredArtisans,
-    requirements: buyerRequirements,
-    historicalData: await getHistoricalMatchData()
+  // 3. SageMaker-powered intelligent matching
+  const matchingResults = await sagemaker.invokeEndpoint({
+    EndpointName: 'artisan-buyer-matching-model',
+    ContentType: 'application/json',
+    Body: JSON.stringify({
+      artisans: filteredArtisans,
+      requirements: buyerRequirements,
+      historicalData: await getHistoricalMatchData()
+    })
+  });
+  
+  // 4. Amazon Q for additional business intelligence
+  const rankedMatches = await amazonQ.enhanceMatches({
+    sagemakerResults: matchingResults,
+    marketTrends: await getMarketTrends()
   });
   
   return rankedMatches.slice(0, 10); // Top 10 matches
@@ -242,6 +264,61 @@ const processVoiceCommand = async (audioBuffer, language) => {
     audioResponse: audioResponse.AudioStream,
     actionTaken: response.action
   };
+};
+```
+
+### SageMaker ML Pipeline
+```javascript
+// Custom Model Training and Deployment Pipeline
+const trainCraftAssessmentModel = async (trainingData) => {
+  // 1. Prepare training data in S3
+  const trainingJobName = `craft-assessment-${Date.now()}`;
+  
+  // 2. Create SageMaker training job
+  const trainingJob = await sagemaker.createTrainingJob({
+    TrainingJobName: trainingJobName,
+    AlgorithmSpecification: {
+      TrainingImage: 'custom-craft-recognition-algorithm',
+      TrainingInputMode: 'File'
+    },
+    InputDataConfig: [{
+      ChannelName: 'training',
+      DataSource: {
+        S3DataSource: {
+          S3DataType: 'S3Prefix',
+          S3Uri: `s3://shebalance-ml-data/training/${trainingJobName}/`,
+          S3DataDistributionType: 'FullyReplicated'
+        }
+      }
+    }],
+    OutputDataConfig: {
+      S3OutputPath: `s3://shebalance-ml-models/${trainingJobName}/`
+    },
+    ResourceConfig: {
+      InstanceType: 'ml.p3.2xlarge',
+      InstanceCount: 1,
+      VolumeSizeInGB: 100
+    }
+  });
+  
+  // 3. Deploy model to endpoint after training completion
+  const modelName = `craft-assessment-model-${Date.now()}`;
+  const endpointName = `craft-assessment-endpoint-${Date.now()}`;
+  
+  await sagemaker.createModel({
+    ModelName: modelName,
+    PrimaryContainer: {
+      Image: 'custom-craft-recognition-inference',
+      ModelDataUrl: `s3://shebalance-ml-models/${trainingJobName}/output/model.tar.gz`
+    }
+  });
+  
+  await sagemaker.createEndpoint({
+    EndpointName: endpointName,
+    EndpointConfigName: await createEndpointConfig(modelName)
+  });
+  
+  return { trainingJobName, endpointName };
 };
 ```
 
