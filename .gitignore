@@ -1,14 +1,9 @@
-# Ignore everything by default
-*
+# Standard gitignore for web projects
+# Ignore system files
+.DS_Store
+Thumbs.db
 
-# Allow only specific files
-!.gitignore
-!.kiro/requirements.md
-!.kiro/design.md
-!generated-diagrams/
-!generated-diagrams/*.png
-
-# Ignore any potential backup files
+# Ignore temporary files
 *~
 *.bak
 *.swp
@@ -16,5 +11,12 @@
 *.tmp
 *.temp
 *.log
-.DS_Store
-Thumbs.db
+
+# Ignore node_modules if you add npm later
+node_modules/
+
+# Ignore IDE files
+.vscode/settings.json
+.idea/
+
+# Keep everything else (all project files will be tracked)
