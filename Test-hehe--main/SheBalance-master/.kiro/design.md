@@ -973,6 +973,295 @@ const dataFlow = {
 };
 ```
 
+### Food Marketplace Architecture Logic
+```javascript
+// Artisan Food Marketplace - Multi-Vendor Platform
+const foodMarketplaceSystem = {
+  categories: ['bakery', 'farm-fresh', 'ready-meals', 'sweet-delights', 'deli'],
+  
+  // Vendor Management
+  vendorOnboarding: async (vendorData) => {
+    const verification = {
+      identityVerification: await verifyArtisanIdentity(vendorData.artisanId),
+      foodSafetyCertification: await checkHygieneCertification(vendorData),
+      kitchenInspection: await scheduleKitchenInspection(vendorData.location),
+      businessLicense: await validateFoodBusinessLicense(vendorData)
+    };
+    
+    if (verification.identityVerification && verification.foodSafetyCertification) {
+      const vendorProfile = await createVendorProfile({
+        artisanId: vendorData.artisanId,
+        businessName: vendorData.businessName,
+        categories: vendorData.specialties,
+        certifications: verification,
+        commissionRate: 0.07, // 7% platform fee
+        status: 'active'
+      });
+      
+      return vendorProfile;
+    }
+  },
+  
+  // Product Listing Management
+  addProduct: async (vendorId, productData) => {
+    const product = {
+      productId: `prod_${Date.now()}`,
+      vendorId: vendorId,
+      category: productData.category,
+      name: productData.name,
+      description: productData.description,
+      price: productData.price,
+      images: await uploadToS3(productData.images),
+      ingredients: productData.ingredients,
+      allergens: productData.allergens,
+      shelfLife: productData.shelfLife,
+      preparationTime: productData.preparationTime,
+      minimumOrder: productData.minimumOrder || 1,
+      inventory: productData.initialStock,
+      ratings: { average: 0, count: 0 }
+    };
+    
+    await dynamoDB.putItem({
+      TableName: 'FoodProducts',
+      Item: product
+    });
+    
+    return product;
+  },
+  
+  // Multi-Vendor Cart System
+  cartManagement: {
+    addToCart: async (userId, productId, quantity) => {
+      const product = await getProduct(productId);
+      const cart = await getUserCart(userId);
+      
+      // Group by vendor for separate checkout
+      if (!cart.vendors[product.vendorId]) {
+        cart.vendors[product.vendorId] = {
+          vendorName: await getVendorName(product.vendorId),
+          items: [],
+          subtotal: 0
+        };
+      }
+      
+      cart.vendors[product.vendorId].items.push({
+        productId: productId,
+        name: product.name,
+        price: product.price,
+        quantity: quantity,
+        total: product.price * quantity
+      });
+      
+      cart.vendors[product.vendorId].subtotal += product.price * quantity;
+      cart.grandTotal = calculateGrandTotal(cart.vendors);
+      
+      await saveCart(userId, cart);
+      return cart;
+    },
+    
+    checkout: async (userId, deliveryDetails) => {
+      const cart = await getUserCart(userId);
+      const orders = [];
+      
+      // Create separate orders for each vendor
+      for (const [vendorId, vendorCart] of Object.entries(cart.vendors)) {
+        const order = {
+          orderId: `order_${Date.now()}_${vendorId}`,
+          userId: userId,
+          vendorId: vendorId,
+          items: vendorCart.items,
+          subtotal: vendorCart.subtotal,
+          platformFee: vendorCart.subtotal * 0.07,
+          deliveryFee: calculateDeliveryFee(deliveryDetails.location, vendorId),
+          total: vendorCart.subtotal + (vendorCart.subtotal * 0.07) + deliveryFee,
+          deliveryDetails: deliveryDetails,
+          status: 'pending',
+          createdAt: Date.now()
+        };
+        
+        await dynamoDB.putItem({
+          TableName: 'FoodOrders',
+          Item: order
+        });
+        
+        // Notify vendor via WhatsApp
+        await sendWhatsAppNotification(vendorId, {
+          type: 'new_order',
+          orderId: order.orderId,
+          items: order.items,
+          deliveryTime: deliveryDetails.preferredTime
+        });
+        
+        orders.push(order);
+      }
+      
+      await clearCart(userId);
+      return orders;
+    }
+  },
+  
+  // Book a Chef Service
+  chefBooking: async (bookingRequest) => {
+    const availableChefs = await sagemaker.invokeEndpoint({
+      EndpointName: 'chef-matching-model',
+      ContentType: 'application/json',
+      Body: JSON.stringify({
+        cuisine: bookingRequest.cuisinePreference,
+        eventType: bookingRequest.eventType,
+        guestCount: bookingRequest.guestCount,
+        date: bookingRequest.date,
+        location: bookingRequest.location,
+        budget: bookingRequest.budget
+      })
+    });
+    
+    const rankedChefs = availableChefs.chefs.map(chef => ({
+      chefId: chef.id,
+      name: chef.name,
+      specialties: chef.specialties,
+      rating: chef.rating,
+      experience: chef.yearsOfExperience,
+      pricePerPerson: chef.pricing,
+      availability: chef.availableDates,
+      portfolio: chef.dishPhotos
+    }));
+    
+    return rankedChefs.slice(0, 10); // Top 10 matches
+  },
+  
+  // Quality Assurance & Reviews
+  reviewSystem: async (orderId, review) => {
+    const order = await getOrder(orderId);
+    
+    const reviewData = {
+      reviewId: `review_${Date.now()}`,
+      orderId: orderId,
+      userId: review.userId,
+      vendorId: order.vendorId,
+      rating: review.rating, // 1-5 stars
+      foodQuality: review.foodQuality,
+      packaging: review.packaging,
+      delivery: review.delivery,
+      comment: review.comment,
+      images: review.images || [],
+      timestamp: Date.now()
+    };
+    
+    await dynamoDB.putItem({
+      TableName: 'FoodReviews',
+      Item: reviewData
+    });
+    
+    // Update vendor rating
+    await updateVendorRating(order.vendorId, review.rating);
+    
+    // Update product ratings
+    for (const item of order.items) {
+      await updateProductRating(item.productId, review.rating);
+    }
+    
+    return reviewData;
+  },
+  
+  // Delivery Coordination
+  deliveryManagement: {
+    assignDelivery: async (orderId) => {
+      const order = await getOrder(orderId);
+      const vendor = await getVendor(order.vendorId);
+      
+      // Find nearby delivery partners
+      const deliveryPartners = await findNearbyDeliveryPartners(
+        vendor.location,
+        order.deliveryDetails.location
+      );
+      
+      const assignment = {
+        orderId: orderId,
+        partnerId: deliveryPartners[0].id,
+        pickupLocation: vendor.location,
+        deliveryLocation: order.deliveryDetails.location,
+        estimatedTime: calculateDeliveryTime(vendor.location, order.deliveryDetails.location),
+        status: 'assigned'
+      };
+      
+      // Send WhatsApp tracking link to customer
+      await sendWhatsAppTracking(order.userId, {
+        orderId: orderId,
+        trackingLink: `https://shebalance.com/track/${orderId}`,
+        estimatedDelivery: assignment.estimatedTime
+      });
+      
+      return assignment;
+    },
+    
+    updateStatus: async (orderId, status) => {
+      await dynamoDB.updateItem({
+        TableName: 'FoodOrders',
+        Key: { orderId: orderId },
+        UpdateExpression: 'SET #status = :status, updatedAt = :timestamp',
+        ExpressionAttributeNames: { '#status': 'status' },
+        ExpressionAttributeValues: {
+          ':status': status,
+          ':timestamp': Date.now()
+        }
+      });
+      
+      // Notify customer via WhatsApp
+      await sendWhatsAppStatusUpdate(orderId, status);
+    }
+  }
+};
+
+// Artisanal Design System Implementation
+const foodMarketplaceDesign = {
+  colorPalette: {
+    cream: '#F5F5DC',
+    beige: '#E8DCC4',
+    deepBrown: '#4B3621',
+    chocolate: '#6B4423',
+    terracotta: '#C97D60',
+    wheat: '#D4A574'
+  },
+  
+  typography: {
+    headings: 'Playfair Display, serif',
+    body: 'Inter, sans-serif',
+    sizes: {
+      hero: '3.5rem',
+      sectionHeading: '2.5rem',
+      cardTitle: '1.5rem',
+      body: '1rem'
+    }
+  },
+  
+  components: {
+    buttons: {
+      primary: {
+        background: 'var(--deep-brown)',
+        color: 'white',
+        borderRadius: '50px',
+        padding: '14px 28px',
+        hover: {
+          background: 'var(--chocolate)',
+          transform: 'translateY(-2px)',
+          boxShadow: '0 5px 15px rgba(75, 54, 33, 0.3)'
+        }
+      }
+    },
+    
+    cards: {
+      borderRadius: '25px',
+      padding: '25px',
+      boxShadow: '0 4px 15px rgba(75, 54, 33, 0.08)',
+      hover: {
+        transform: 'translateY(-8px)',
+        boxShadow: '0 12px 30px rgba(75, 54, 33, 0.15)'
+      }
+    }
+  }
+};
+```
+
 ## Performance & Scalability
 
 ### Auto-Scaling Strategy
@@ -995,6 +1284,6 @@ const dataFlow = {
 
 ---
 
-**Document Version**: 2.0 - AWS Architecture Focused  
-**Last Updated**: January 25, 2026  
+**Document Version**: 2.1 - Food Marketplace Added  
+**Last Updated**: February 13, 2026  
 **Status**: Technical Design Complete
